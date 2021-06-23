@@ -1,0 +1,17 @@
+ {
+  "id": 1,
+  "authorName": "Patryick",
+  "describe": "Cool set of comments for nature",
+  "commentsSet": [
+    {
+      "mandatory_words": [
+        "icecave",
+        "ice_cave"
+      ],
+      "comments": [
+        "Nice shot. Ice caves are amazing",
+        "Cool. Aren't ice caves just amazing?"
+      ]
+    }
+  ]
+}
