@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BOT</title>
+    {% load static %}
+    {% load mongo_id %}
+    <script src="{% static 'jQuery/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'jQuery/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'jQuery/Start.js' %}"></script>
+    <script src="{% static 'jQuery/Comments.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/Start.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/Comments.css' %}">
+</head>
+<body>
+
+<div id="Welcome">
+    <div id="icon"></div>
+    <div id="title">Intelligent Media Auto Manager</div>
+    <br/>
+    <br/>
+    <div id="Menu">
+        <a href="{% url 'Exit' %}">
+            Exit
+        </a>
+        <a href="{% url 'Main' %}">
+            Start
+        </a>
+    </div>
+</div>
+
+<div id="Main">
+    <div id="Content">
+        <h2>Comments Setting</h2>
+        <form action="/AddSingleComment/" method="post">
+            {% csrf_token %}
+            <h3><strong>Add Comment</strong></h3>
+            <hr />
+            <input type="text" placeholder="Your comment..." name="comment" id="single_comment">
+            <input type="text" value="Add Comment" class="inactive_button" id="single_comment_submit" readonly>
+            <a href = "{% url 'Clear' %}" class="launch">Clear Comments</a>
+        </form>
+
+        <form action="/CommentsAdd/" method="post">
+            {% csrf_token %}
+            <h3><strong>Comments to Add</strong></h3>
+            <hr/>
+                {% for comm in comments %}
+                <strong id="comment">"{{comm}}"</strong>
+                {% endfor %}
+            <h3><strong>Author</strong></h3>
+            <hr/>
+            <input type="text" placeholder="Place your name here..." name="author_name" id="author_name">
+            <label id="author_error"></label>
+            <br/>
+
+            <h3><strong>Description</strong></h3>
+            <hr/>
+            <input type="text" placeholder="Your description of the comment setting..." name="description">
+            <br/>
+
+            <h3><strong>Tags</strong></h3>
+            <hr/>
+            <input type="text" id="tags" placeholder="Place your tags here..." name="tags">
+            <br/>
+
+            <h3><strong>Added</strong></h3>
+            <hr/>
+            <table name="settings">
+                <tr id="header">
+                    <td class="author">Author</td>
+                    <td class="description">Description</td>
+                    <td class="tags">Tags</td>
+                    <td class="comment">Comments</td>
+                    <td class="action">Action</td>
+                </tr>
+                {% for setting in db_comments %}
+                <tr>
+                    <td>{{setting.author_name}}</td>
+                    <td>{{setting.description}}</td>
+                    <td>
+                        {% for commentSet in setting.commentsSet %}
+                            {% for tag in commentSet.mandatory_words %}
+                            #{{tag}}
+                            {% endfor %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for commentSet in setting.commentsSet %}
+                            {% for comment in commentSet.comments %}
+                                "{{comment}}"<br />
+                            {% endfor %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <a href="/Delete/{{setting|mongo_id}}/" class="action_button" name="action_button">DELETE</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <input type="Submit" id="submit" value="Add Comment Set" class="launch">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+table{
+    border-radius:15px;
+    table-layout:fixed;
+    width:100%;
+    }
+table tr td{
+    padding:10px 5px 10px 5px;
+    font-weight:bold;
+    text-align:center;
+    width:20%;
+    font-size:min(2vw, 12px);
+    word-wrap:break-word;
+    border-bottom:1px solid gray;
+}
+    tr .description, .tags {
+        width: 9%;
+    }
+
+    tr .action{
+        width:5%;
+    }
+
+    tr .author{
+        width:4%;
+    }
+
+    tr .action,.author, .description, .tags, .comment{
+        background:black;
+        color:white;
+    }
+
+    #Content .inactive_button{
+        background:lightgray;
+        color:gray;
+        display:block;
+        padding:10px 0px 10px 0px;
+        text-align:center;
+        font-weight:bold;
+        border-radius:15px;
+        border:none;
+        font-size:min(2vw, 14px);
+        width:100%;
+    }
+
+    #Content .action_button{
+        font-size:min(2vw, 11px);
+        border-radius:5px;
+        padding:10px 0px 10px 0px;
+        width:100%;
+        font-weight:bold;
+    }
+
+    #Content #comment{
+        background:lightgreen;
+        color:black;
+        padding:0px 3px 0px 3px;
+        border-radius:10px;
+    }

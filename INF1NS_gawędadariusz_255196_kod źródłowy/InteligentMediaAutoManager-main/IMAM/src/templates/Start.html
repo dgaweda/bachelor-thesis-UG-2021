@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BOT</title>
+    {% load static %}
+    {% load mongo_id %}
+    <script src="{% static 'jQuery/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'jQuery/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'jQuery/Start.js' %}"></script>
+    <script type="module" src="{% static 'jQuery/Validator.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/Start.css' %}">
+</head>
+<body>
+
+<div id="Welcome">
+    <div id="icon"></div>
+    <div id="title">Intelligent Media Auto Manager</div>
+    <br/>
+    <br/>
+    <div id="Menu">
+        <a href="{% url 'Exit' %}">
+            Exit
+        </a>
+
+        <a href="{% url 'Comments' %}">
+            Comments
+        </a>
+    </div>
+</div>
+
+<div id="Main">
+    <div id="Content">
+        <h2>Settings</h2>
+        <h3 class="error">{{settings_error}}</h3>
+        <form action="/Start/" method="post" id="starting_form">
+            {% csrf_token %}
+
+            <div id="login_form">
+                <label for="login">Login</label>
+                <input type="text" id="login" name="username" placeholder="Login" minlength="4" required>
+
+                <label for="pass">Password</label>
+                <input type="password" id="pass" name="password" placeholder="Password" minlength="5" required>
+                <h3 class="error">{{login_info}}</h3>
+            </div>
+
+            <div id="show_password">
+                <label for="check">Show Password</label>
+                <input type="checkbox" class="checkbox" id="check">
+            </div>
+            <p>
+                Not Registered?<a href="https://www.instagram.com/accounts/emailsignup/" target="_blank">Create an Account</a>
+            </p>
+
+            <h3>
+                <strong>LIKE</strong> Photos By Tags
+            </h3>
+            <label>
+                Search for photos by specified tags and like them with certain probability.
+            </label>
+            <hr/>
+            <input type="text" placeholder="Tag" name="like_photo_tag" id="like_photo_tags_field">
+            <label class="error" id="like_photo_tags_error_field"></label>
+
+            <input type="text" placeholder="Probability" name="like_photo_probability" id="like_photo_probability_field">
+            <label class="error" id="like_photo_probability_error_field"></label>
+            <br/>
+
+            <h3>
+                <strong>LIKE</strong> Videos By Tags
+            </h3>
+            <label>Search for videos by specified tags and like them with certain probability.</label>
+            <hr/>
+            <input type="text" placeholder="Tag" name="video_tag" id="like_video_tags_field">
+            <label class="error" id="like_video_tags_error_field"></label>
+
+            <input type="text" placeholder="Probability" name="like_video_probability" id="like_video_probability_field">
+            <label class="error" id="like_video_probability_error_field"></label>
+            <br/>
+
+            <h3><strong>FOLLOW</strong> By Location</h3>
+            <label>
+                Follows users by specified locations
+            </label>
+            <hr/>
+            <input type="text" placeholder="Location" name="location" id="locations_field">
+            <label class="error" id="locations_error_field"></label>
+            <br/>
+
+            <h3><strong>FOLLOW</strong> By Tags</h3>
+            <label>
+                Follows users by specified tags.
+            </label>
+            <hr/>
+            <input type="text" placeholder="Tag" name="follow_tags" id="follow_by_tags_field">
+            <label class="error" id="follow_by_tags_error_field"></label>
+            <br/>
+
+            <h3><strong>UNFOLLOW</strong></h3>
+            <label>Unfollow non following set amount of users after specified time</label>
+            <hr />
+            <input type="text" placeholder="Amount" name="unfollow_amount" id="unfollow_non_followers_amount_field">
+            <label class="error" id="unfollow_non_followers_amount_error_field"></label>
+            <input type="text" placeholder="Time in minutes" name="unfollow_delay" id="unfollow_non_followers_time_field">
+            <label class="error" id="unfollow_non_followers_time_error_field"></label>
+            <br/>
+
+            <h3>
+                <strong id="comment_title">COMMENT</strong>
+                <input type="checkbox" id="comment_checkbox">
+            </h3>
+            <label id="comment_label">
+                Allows to comment posts by specified list
+            </label>
+            <hr/>
+            <label for="options" id="option_label">Please choose an option:
+                <select id="options" name="option">
+                    <option value="first">-------------------------------------------------------------------------</option>
+                {% for setting in db_comments %}
+                    <option value="{{setting|mongo_id}}">
+                        Author &rarr;   {{setting.author_name}}
+                        &nbsp; | &nbsp; Description &rarr;  {{setting.description}}
+                        &nbsp; | &nbsp; Tags &rarr;
+                        {% for commentSet in setting.commentsSet %}
+                            {% for tag in commentSet.mandatory_words %}
+                            #{{tag}}
+                            {% endfor %}
+                        {% endfor %}
+
+                        &nbsp; | &nbsp; Comments &rarr;
+                        {% for commentSet in setting.commentsSet %}
+                            {% for comment in commentSet.comments %}
+                                "{{comment}}"
+                            <br />
+                            {% endfor %}
+                        {% endfor %}
+                    </option>
+                {% endfor %}
+                </select>
+                </label>
+            </table>
+            <input type="Submit" value="Launch" class="launch" id="launch" readonly>
+        </form>
+    </div>
+</div>
+</body>
+</html>
